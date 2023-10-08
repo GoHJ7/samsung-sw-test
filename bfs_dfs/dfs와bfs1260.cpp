@@ -12,10 +12,10 @@ int N,M,V;
 void bfs(int start){
     queue<int> q;
     q.push(start);
+    visited[start]= true;
     while(!q.empty()){
         int cur = q.front();
         cout<<cur<<" ";
-        visited[cur] = true;
         q.pop();
         for(int i= 0 ;i<graph[cur].size();i++){
             int nextnode = graph[cur][i];
