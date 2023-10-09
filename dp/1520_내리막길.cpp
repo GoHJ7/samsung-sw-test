@@ -1,6 +1,6 @@
 #include <iostream>
 #include <queue>
-
+#include <tuple>
 using namespace std;
 
 class compare{
@@ -45,7 +45,7 @@ int main(){
         int height,x,y;
         tie(height,x,y) = pq.top();
         pq.pop();
-        cout<<"height x y "<<height <<x <<y<<endl;
+        //cout<<"height x y "<<height <<x <<y<<endl;
         for(int i = 0; i < 4 ; i++){
             if(isValid(x + dirX[i],y + dirY[i],height)){
                 dp[x][y] += dp[x +dirX[i]][y + dirY[i]];
