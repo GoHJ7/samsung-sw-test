@@ -108,8 +108,8 @@ int main(int argc, char** argv)
 	   freopen 함수를 사용하기 위해서는 #include <cstdio>, 혹은 #include <stdio.h> 가 필요합니다.
 	   단, 채점을 위해 코드를 제출하실 때에는 반드시 freopen 함수를 지우거나 주석 처리 하셔야 합니다.
 	*/
-	freopen("input.txt", "r", stdin);
-    freopen("output.txt","w",stdout);
+	//freopen("input.txt", "r", stdin);
+    //freopen("output.txt","w",stdout);
 	cin>>T;
 	/*
 	   여러 개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
