@@ -32,23 +32,16 @@
 
 #include<iostream>
 #include <vector>
-#include <cstdlib>
 #include <algorithm>
+#include <cstring>
 
 
 using namespace std;
-typedef struct ap{
-    int x;
-    int y;
-    int range;
-    int power;
-}AP;
+const int MAX = 20;
+int map[MAX][MAX];
 
-int dirX[5] = {0,0,1,0,-1};
-int dirY[5] = {0,-1,0,1,0};
-int getMan(int x, int y, int apX, int apY){
-    return abs(x-apX) + abs(y - apY);
-}
+bool checkSlope(vector<int>& v,const int roadL);
+
 int main(int argc, char** argv)
 {
 	int test_case;
@@ -64,77 +57,81 @@ int main(int argc, char** argv)
 	*/
 	// freopen("input.txt", "r", stdin);
 	// freopen("output.txt", "w", stdout);
-
 	cin>>T;
 	/*
 	   여러 개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
 	*/
 	for(test_case = 1; test_case <= T; ++test_case)
 	{
-
-		int M,A;
-        cin>>M>>A;
-        vector<int> movingA,movingB;
-        vector<AP> ap(A + 1);
-        int chargeMax = 0;
-
-        int aX = 1;
-        int aY = 1;
-        int bX = 10;
-        int bY = 10;
-
-        for(int i = 0 ; i< M; i++){
-            int m;
-            cin>>m;
-            movingA.push_back(m);
-        }
-        for(int i = 0 ; i< M; i++){
-            int m;
-            cin>>m;
-            movingB.push_back(m);
-        }
-        for(int i =0 ; i< A; i++){
-            cin>>ap[i].x>>ap[i].y>>ap[i].range>>ap[i].power;
-        }
-        ap[A].x = -1;
-        ap[A].y = -1;
-        ap[A].range = 100;
-        ap[A].power = 0;
-
-        for(int i =0 ; i <= M; i++){
-            //charge
-            vector<int> connectedA,connectedB;
-            for(int chargeNum = 0 ; chargeNum < ap.size(); chargeNum++){
-                if(getMan(aX,aY,ap[chargeNum].x,ap[chargeNum].y) <= ap[chargeNum].range){
-                    connectedA.push_back(chargeNum);
-                }
-                if(getMan(bX,bY,ap[chargeNum].x,ap[chargeNum].y) <= ap[chargeNum].range){
-                    connectedB.push_back(chargeNum);
-                }
+        int n, roadL;
+        cin>>n>>roadL;
+        for(int i = 0; i < n ; i++){
+            for(int j = 0; j < n ; j++){
+                cin>>map[i][j];
             }
-            int curMax = 0;
-            for(vector<int>::iterator ait = connectedA.begin(); ait != connectedA.end();ait++ ){
-                for(vector<int>::iterator bit = connectedB.begin(); bit != connectedB.end();bit++){
-                    if(*ait == *bit){
-                        curMax = max(curMax, ap[*ait].power);
-                    }else{
-                        curMax = max(curMax,ap[*ait].power + ap[*bit].power);
-                    }
-                }
-            }
-           
-            chargeMax += curMax;
-            if(i == M) break;
-            //move
-            aX += dirX[movingA[i]];
-            aY += dirY[movingA[i]];
-            bX += dirX[movingB[i]];
-            bY += dirY[movingB[i]];
-
-            if(aX < 1 || aY < 1 || aX >10 || aY >10 
-            ||bX < 1|| bY < 1 || bX > 10 || bY > 10) cout<<"moving error"<<endl;
         }
-        cout<<"#"<<test_case<<" "<<chargeMax<<'\n';
+        
+        int totalRoad = 0;
+        //가로 체크
+        for(int i = 0; i < n ; i++){
+            vector<int> v;
+            for(int j = 0; j < n ; j++){
+                v.push_back(map[i][j]);
+            }
+            if(checkSlope(v,roadL)){
+                //cout<<"가로 "<<i<<endl;
+                totalRoad++;
+            }
+        }
+
+        //세로 체크
+        for(int i = 0; i < n ; i++){
+            vector<int> v;
+            for(int j = 0; j < n ; j++){
+                v.push_back(map[j][i]);
+            }
+            if(checkSlope(v,roadL)){
+                //cout<<"세로"<<i<<endl;
+                totalRoad ++;
+            }
+        }
+
+        cout<<"#"<<test_case<<" "<<totalRoad<<"\n";
 	}
 	return 0;//정상종료시 반드시 0을 리턴해야합니다.
+}
+
+bool checkSlope(vector<int>& v,const int roadL){
+    bool constructed[v.size()];
+    memset(constructed,false,sizeof(constructed));
+    for(int i =0 ; i<v.size() - 1; i++){
+        //v[i] - v[i+1] 양수면 역방향 check;
+        //음수면 정방향 체크
+        int slopeDiff = v[i] - v[i + 1];
+        switch(slopeDiff){
+            case 0:
+            break;
+            case -1:
+            for(int roadI = i ; roadI >= i + 1 - roadL ; roadI--){
+                if(roadI >= 0 && !constructed[roadI] && v[roadI] == v[i]){
+                    constructed[roadI] = true;
+                }else{
+                    return false;
+                }
+            }
+            break;
+            case 1:
+            for(int roadI = i + 1 ; roadI < i + 1 + roadL ; roadI++){
+                if(roadI < v.size() && !constructed[roadI] && v[roadI] == v[i+1]){
+                    constructed[roadI] = true;
+                }else{
+                    return false;
+                }
+            }
+            break;
+            default:
+            return false;
+        }
+    }
+    return true;
 }
