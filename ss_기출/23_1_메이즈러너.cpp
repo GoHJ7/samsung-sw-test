@@ -85,7 +85,7 @@ void move(){
     //pop out the exited
     for(vector<pair<int,int>>:: iterator it = participant.begin(); it!= participant.end();){
         if(it->first == exitCor.first && it->second == exitCor.second){
-            cout<<"pop out "<<it->first<<" "<<it->second<<endl;
+            //cout<<"pop out "<<it->first<<" "<<it->second<<endl;
             it = participant.erase(it);
         }else{
             it++;
@@ -101,7 +101,7 @@ bool isInqsquare(int r,int c,int length){
 
         if(partr >= r && partr < r + length
         && partc >= c && partc < c+ length){
-            cout<<"participant"<<participant[partN].first<<participant[partN].second<<endl;
+            //cout<<"participant"<<participant[partN].first<<participant[partN].second<<endl;
             return true;
         }
     } 
@@ -127,7 +127,6 @@ void rotate(){
     }
     length++;
     int squarer,squarec;
-    cout<<"length"<<length<<endl;
     //find mins sqaure
     bool found = false;
     for(int _r = length - 1; _r >= 0 ; _r --){
@@ -140,7 +139,7 @@ void rotate(){
             else continue;
         }
     }
-    cout<<"rotate?"<<squarer<<" "<<squarec<<endl;
+    
     //rotate
     int rotated[length][length];
     int r = 0, c = 0;
@@ -154,16 +153,16 @@ void rotate(){
                 exitCor.first = r + squarer;
                 exitCor.second = c + squarec;
                 exitvisited = true;
-                cout<<"exitCor "<<exitCor.first<<" "<<exitCor.second<<endl;
+                //cout<<"exitCor "<<exitCor.first<<" "<<exitCor.second<<endl;
             }
             
             for(int p = 0 ; p < participant.size();p++){
                 if(participant[p].first == i && participant[p].second == j && !visited[p]){
-                    cout<<"회전 전 사람 "<<participant[p].first<<" "<<participant[p].second<<endl;
+                    //cout<<"회전 전 사람 "<<participant[p].first<<" "<<participant[p].second<<endl;
                     participant[p].first =  r+ squarer;
                     participant[p].second = c + squarec;
                     visited[p]=true;
-                    cout<<"회전 후 사람 "<<participant[p].first<<" "<<participant[p].second<<endl;
+                    //cout<<"회전 후 사람 "<<participant[p].first<<" "<<participant[p].second<<endl;
                 }
              }
             rotated[r][c] = maze[i][j];
@@ -172,7 +171,7 @@ void rotate(){
         r++;
         c= 0;
     }
-    
+    /*
     cout<<"rotatebox"<<endl;
     for(int  i= 0; i <length ; i++){
         for(int j = 0 ; j < length; j ++){
@@ -187,7 +186,7 @@ void rotate(){
         }
         cout<<"\n";
     }
-    
+    */
     for(int i = 0 ; i < length; i++){
         for(int j = 0 ; j < length ; j++){
             if(rotated[i][j] >= 1) maze[squarer + i][squarec + j] = rotated[i][j] -1;
@@ -197,7 +196,7 @@ void rotate(){
             }
         }
     }
-    
+    /*
     cout<<"maze"<<endl;
     for(int i = 1 ; i <= n; i++){
         for(int j = 1 ; j <= n ; j++){
@@ -205,5 +204,5 @@ void rotate(){
         }
         cout<<"\n";
     }
-    
+    */
 }
