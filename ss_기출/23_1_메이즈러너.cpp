@@ -48,11 +48,11 @@ int main() {
         //move
         
         move();
-        
+        if(participant.empty()) break;
         //rotate
         rotate();
 
-        if(participant.empty()) break;
+        
     }
     cout<<totalMove<<endl;
     cout<<exitCor.first<<" "<<exitCor.second;
